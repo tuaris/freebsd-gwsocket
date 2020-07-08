@@ -1,0 +1,77 @@
+#!/bin/sh
+
+# $FreeBSD:$
+#
+# PROVIDE: %%PORTNAME%%
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable %%PORTNAME%%
+# %%PORTNAME%%_enable="YES"
+#
+# %%PORTNAME%%_enable (bool): 	Set to YES to enable %%PORTNAME%%
+#				Default: NO
+# %%PORTNAME%%_conf (str):		%%PORTNAME%% configration file
+#				Default: %%PREFIX%%/etc/%%PORTNAME%%.conf
+# %%PORTNAME%%_user (str):		%%PORTNAME%% daemon user
+#				Default: %%DEFAULT_USER%%
+# %%PORTNAME%%_group (str):		%%PORTNAME%% daemon group
+#				Default: %%DEFAULT_GROUP%%
+
+. /etc/rc.subr
+
+name="%%PORTNAME%%"
+rcvar=%%PORTNAME%%_enable
+load_rc_config $name
+
+: ${%%PORTNAME%%_enable:="NO"}
+: ${%%PORTNAME%%_user:="%%DEFAULT_USER%%"}
+: ${%%PORTNAME%%_group:="%%DEFAULT_GROUP%%"}
+: ${%%PORTNAME%%_config:="%%PREFIX%%/etc/${name}.conf"}
+: ${%%PORTNAME%%_log:="/var/log/${name}.log"}
+: ${%%PORTNAME%%_pidfile:="/var/run/${name}.pid"}
+
+required_files=${%%PORTNAME%%_config}
+procname="%%PREFIX%%/bin/%%PORTNAME%%"
+pidfile=${%%PORTNAME%%_pidfile}
+command=/usr/sbin/daemon
+start_precmd="%%PORTNAME%%_precmd"
+
+%%PORTNAME%%_precmd()
+{
+
+	install -o ${%%PORTNAME%%_user} /dev/null ${%%PORTNAME%%_pidfile}
+
+	if [ ! -f "${%%PORTNAME%%_log}" ]; then
+		touch "${%%PORTNAME%%_log}"
+		chown "${%%PORTNAME%%_user}:${%%PORTNAME%%_group}" "${%%PORTNAME%%_log}"
+		chmod 640 "${%%PORTNAME%%_log}"
+	fi
+
+	# Loads the options declared in the configuration file into "$command_args".
+    %%PORTNAME%%_conf_to_args ${%%PORTNAME%%_config}
+}
+
+%%PORTNAME%%_conf_to_args()
+{
+	local config_file_path=$1
+
+	command_args="-f -t ${name} -p ${pidfile} -o ${%%PORTNAME%%_log} ${procname}"
+
+	while read -r _line; do
+		# Only proceed with lines which contain variable declaration.
+		echo "${_line}" | grep -q -E \
+        				-e "^[[:blank:]]*[[:alpha:]_][[:alnum:]_]{0,30}=" ||
+							continue
+		
+		if [ -z "${_line#*=}" ] || [ "${_line#*=}" == "false" ]; then
+			command_args="$command_args --${_line%%=*}"
+		else
+			command_args="$command_args --${_line%%=*}=${_line#*=}"
+		fi
+
+	done < ${config_file_path}
+}
+
+run_rc_command "$1"
+
