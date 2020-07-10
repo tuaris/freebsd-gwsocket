@@ -29,7 +29,6 @@
 #					Default: %%DEFAULT_LOGDIR%%
 # %%PORTNAME%%_piddir (str):		%%PORTNAME%% pid file directory
 #					Default: %%DEFAULT_RUNDIR%%
-#
 
 . /etc/rc.subr
 
