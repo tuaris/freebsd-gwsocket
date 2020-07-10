@@ -63,32 +63,48 @@ start_precmd="%%PORTNAME%%_precmd"
 
 %%PORTNAME%%_conf_to_args()
 {
-	local _line config_file_path=$1
-
+	local _line %%PORTNAME%%_config_param %%PORTNAME%%_config_value config_file_path=$1
 	command_args="-f -t ${procdesc} -p ${pidfile} -o ${logfile} ${procname}"
 
 	while read -r _line; do
 		# Only proceed with lines which contain variable declaration.
 		echo "${_line}" | grep -q -E \
-        				-e "^[[:blank:]]*[[:alpha:]_][[:alnum:]_]{0,30}=" ||
-							continue
-		
-		if [ -z "${_line#*=}" ] || [ "${_line#*=}" == "false" ]; then
-			command_args="$command_args --${_line%%=*}"
-		else
-			command_args="$command_args --${_line%%=*}=${_line#*=}"
-		fi
+        	-e "^[[:blank:]]*[[:alpha:]_-][[:alnum:]_-]{0,30}=" ||
+			continue
 
+		%%PORTNAME%%_config_param=${_line%%=*}
+		%%PORTNAME%%_config_value=${_line#*=}
+
+		# Properly handle flag type paramaters
+		if %%PORTNAME%%_is_flag_param ${%%PORTNAME%%_config_param}; then
+			if checkyesno %%PORTNAME%%_config_value; then
+				command_args="$command_args --${%%PORTNAME%%_config_param}"
+			fi
+		elif [ -n "${%%PORTNAME%%_config_value}" ]; then
+			command_args="$command_args --${%%PORTNAME%%_config_param}=${%%PORTNAME%%_config_value}"
+		fi
 	done < ${config_file_path}
 }
 
-%%PORTNAME%%_find_instances ()
+%%PORTNAME%%_find_instances()
 {
 	local instance_config
 	for instance_config in ${%%PORTNAME%%_conf_d%/}/*.conf; do
 		[ -f "$instance_config" ] || break
 		%%PORTNAME%%_instances="$%%PORTNAME%%_instances $(basename ${instance_config%.conf})";
 	done
+}
+
+%%PORTNAME%%_is_flag_param()
+{
+	case $1 in
+	'echo-mode' | 'strict' )
+		return 0
+		;;
+	*)
+		return 1
+		;;
+	esac
 }
 
 # Handles multi-instance feature
