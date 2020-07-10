@@ -13,21 +13,21 @@
 # %%PORTNAME%%_multi_enable="YES"
 # An instance is created for each *.conf file found in the configration files directory
 #
-# %%PORTNAME%%_enable (bool): 	Set to YES to enable %%PORTNAME%%
+# %%PORTNAME%%_enable (bool):		Set to YES to enable %%PORTNAME%%
 #				Default: NO
-# %%PORTNAME%%_multi_enable (bool): Set to YES to run multiple instances (%%PORTNAME%%_config is ignored)
+# %%PORTNAME%%_multi_enable (bool):	Set to YES to run multiple instances (%%PORTNAME%%_config is ignored)
 #				Default: NO
-# %%PORTNAME%%_conf_d (str):	%%PORTNAME%% configration files directory
+# %%PORTNAME%%_conf_d (str):		%%PORTNAME%% configration files directory
 #				Default: %%ETCDIR%%
-# %%PORTNAME%%_config (str):	%%PORTNAME%% configration file (ignored when %%PORTNAME%%_multi_enable="YES")
+# %%PORTNAME%%_config (str):		%%PORTNAME%% configration file (ignored when %%PORTNAME%%_multi_enable="YES")
 #				Default: %%ETCDIR%%/%%PORTNAME%%.conf
-# %%PORTNAME%%_user (str):		%%PORTNAME%% daemon user
+# %%PORTNAME%%_user (str):			%%PORTNAME%% daemon user
 #				Default: %%DEFAULT_USER%%
-# %%PORTNAME%%_group (str):		%%PORTNAME%% daemon group
+# %%PORTNAME%%_group (str):			%%PORTNAME%% daemon group
 #				Default: %%DEFAULT_GROUP%%
-# %%PORTNAME%%_logdir (str):	%%PORTNAME%% log directory
+# %%PORTNAME%%_logdir (str):		%%PORTNAME%% log directory
 #				Default: %%DEFAULT_LOGDIR%%
-# %%PORTNAME%%_piddir (str):	%%PORTNAME%% pid file directory
+# %%PORTNAME%%_piddir (str):		%%PORTNAME%% pid file directory
 #				Default: %%DEFAULT_RUNDIR%%
 #
 
@@ -58,7 +58,7 @@ start_precmd="%%PORTNAME%%_precmd"
 %%PORTNAME%%_precmd()
 {	
 	# Loads the options declared in the configuration file into "$command_args".
-    %%PORTNAME%%_conf_to_args ${%%PORTNAME%%_config}
+	%%PORTNAME%%_conf_to_args ${%%PORTNAME%%_config}
 }
 
 %%PORTNAME%%_conf_to_args()
