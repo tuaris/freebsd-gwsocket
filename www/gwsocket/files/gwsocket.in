@@ -21,9 +21,9 @@
 #				Default: %%ETCDIR%%
 # %%PORTNAME%%_config (str):		%%PORTNAME%% configration file (ignored when %%PORTNAME%%_multi_enable="YES")
 #				Default: %%ETCDIR%%/%%PORTNAME%%.conf
-# %%PORTNAME%%_user (str):			%%PORTNAME%% daemon user
+# %%PORTNAME%%_user (str):		%%PORTNAME%% daemon user
 #				Default: %%DEFAULT_USER%%
-# %%PORTNAME%%_group (str):			%%PORTNAME%% daemon group
+# %%PORTNAME%%_group (str):		%%PORTNAME%% daemon group
 #				Default: %%DEFAULT_GROUP%%
 # %%PORTNAME%%_logdir (str):		%%PORTNAME%% log directory
 #				Default: %%DEFAULT_LOGDIR%%
