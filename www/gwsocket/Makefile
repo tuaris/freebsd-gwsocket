@@ -23,7 +23,7 @@ OPTIONS_SUB=	yes
 
 DEBUG_CONFIGURE_ON=	--enable-debug
 
-OPENSSL_USES=           ssl autoreconf 
+OPENSSL_USES=           ssl autoreconf
 OPENSSL_PATCH_SITES=    https://github.com/allinurl/${PORTNAME}/commit/
 OPENSSL_PATCHFILES=    3d4e1d1585e5aa54e9500f58efede57feeed7d3d.patch:-p1 # https://github.com/allinurl/gwsocket/issues/28
 OPENSSL_LIBS=	-lcrypto
