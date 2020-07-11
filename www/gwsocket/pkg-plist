@@ -1,6 +1,6 @@
-bin/%%PORTNAME%%
-man/man1/%%PORTNAME%%.1.gz
+bin/gwsocket
+man/man1/gwsocket.1.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/sample.html
-@sample %%ETCDIR%%/%%PORTNAME%%.conf.sample
+@sample %%ETCDIR%%/gwsocket.conf.sample
 @dir(%%DEFAULT_USER%%,%%DEFAULT_GROUP%%,) %%DEFAULT_LOGDIR%%
 @dir(%%DEFAULT_USER%%,%%DEFAULT_GROUP%%,) %%DEFAULT_RUNDIR%%
